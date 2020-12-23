@@ -84,6 +84,11 @@ public class UpdateNotifierPlugin extends CordovaPlugin {
         appUpdateInfoTask.addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
             @Override
             public void onSuccess(AppUpdateInfo appUpdateInfo) {
+                LOG.i(TAG, String.format("getAppUpdateInfo success! UpdateAvailability = %d; UpdateTypeAllowed: immediate: %b, flexible: %b",
+                    appUpdateInfo.updateAvailability(),
+                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE),
+                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)));
+
                 if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
                     try {
                         mAppUpdateManager.startUpdateFlowForResult(appUpdateInfo, AppUpdateType.IMMEDIATE, cordova.getActivity(), RC_APP_UPDATE);
